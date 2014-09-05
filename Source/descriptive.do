@@ -33,3 +33,18 @@ foreach cond of local conditions {
 	macro shift
 }
 
+foreach year of numlist 2002(1)2010 {
+	hist gestacion if gestacion<99&year==`year', scheme(s1color) freq ///
+	  title("Muertes Fetales por Semana de Gestacion") width(1) ///
+	  subtitle("`year'") note("En base a registros de MinSal, `year'.")
+	graph export "$OUT/Gestacion`year'.eps", as(eps) replace
+	macro shift
+}
+
+drop if gestacion==99
+scatter peso gestacion if peso<6000 || qfit peso gestacion if peso<6000, ///
+  title("Peso y tiempo de Gestacion (semanas)") scheme(s1color) ///
+  note("En base a registros de MinSal, 2002-2010.") ///
+  legend(label(1 "Registro Individual") label(2 "Quadratico"))
+graph export "$OUT/PesoGestacion.eps", as(eps) replace
+
