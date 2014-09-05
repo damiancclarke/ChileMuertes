@@ -11,13 +11,17 @@ gen all=1
 
 local conditions all==1 edad_m<19 edad_m<35 edad_m>=19&edad_m<35 edad_m>=35 /*
 */ est_civ_m==1 est_civ_m==2 urba_rural==1 urba_rural==2 nivel_ma>3 nivel_ma<4 
-local names Todos 15-19 <35 20-34 >34 Pareja Soltera Urbana Rural /*
+local names Todos 15-19 Menor35 20-34 Mayor34 Pareja Soltera Urbana Rural /*
 */ NoUniversidad Universidad
 
-hist gestacion if gestacion<99, scheme(s1color) freq width(1) ///
-  title("Muertes Fetales por Semana de Gestacion") ///
-  subtitle("Todos") note("En base a registros de MinSal, 2002-2010.")
-graph export $OUT/AllGestacion.eps, as(eps) replace
+tokenize `names'
+foreach cond of local conditions {
+	hist gestacion if gestacion<99&`cond', scheme(s1color) freq width(1) ///
+	  title("Muertes Fetales por Semana de Gestacion") ///
+	  subtitle("`1'") note("En base a registros de MinSal, 2002-2010.")
+	graph export "$OUT/Gestacion`1'.eps", as(eps) replace
+	macro shift
+}
 
 hist gestacion if gestacion<99&edad_m<19, scheme(s1color) freq width(1) ///
   title("Muertes Fetales por Semana de Gestacion") ///
