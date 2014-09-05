@@ -11,6 +11,8 @@ gen all=1
 
 local conditions all==1 edad_m<19 edad_m<35 edad_m>=19&edad_m<35 edad_m>=35 /*
 */ est_civ_m==1 est_civ_m==2 urba_rural==1 urba_rural==2 nivel_ma>3 nivel_ma<4 
+local names Todos 15-19 <35 20-34 >34 Pareja Soltera Urbana Rural /*
+*/ NoUniversidad Universidad
 
 hist gestacion if gestacion<99, scheme(s1color) freq width(1) ///
   title("Muertes Fetales por Semana de Gestacion") ///
