@@ -48,3 +48,10 @@ scatter peso gestacion if peso<6000 || qfit peso gestacion if peso<6000, ///
   legend(label(1 "Registro Individual") label(2 "Quadratico"))
 graph export "$OUT/PesoGestacion.eps", as(eps) replace
 
+gen semana22=gestacion==22
+collapse semana22, by(edad_m)
+line semana22 edad_m if edad_m>15&edad_m<45, scheme(s1color) ///
+  title("Proporcion de defunciones en semana 22 por edad") ///
+  note("En base a registros de MinSal, 2002-2010.")
+graph export "$OUT/Proporcion22.eps", as(eps) replace
+
